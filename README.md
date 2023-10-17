@@ -33,6 +33,9 @@ Conclusão:
  Tecnologias utilizadas: Java, Tilemap, Pixel Art. 
 
 ---
+
+Observações:
+
 - 0 pontos carteira
 - 100 moedas
 - obs.: cada entrega vale moedas.
