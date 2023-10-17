@@ -33,3 +33,13 @@ Conclusão:
  Tecnologias utilizadas: Java, Tilemap, Pixel Art. 
 
 ---
+- 0 pontos carteira
+- 100 moedas
+- obs.: cada entrega vale moedas.
+- sempre que infrigir uma lei de trânsito, leva uma advertência e receberá pontos na carteira de acordo com a multa atribuída.
+- Regra atual de pontuação de acordo com CTB:
+	-> Quem tem direito a 20 pontos na CNH: esse critério é válido para os motoristas que cometerem duas ou mais infrações gravíssimas no período de um ano.
+	-> Quem tem direito a 30 pontos na CNH: caso o condutor cometa uma infração gravíssima ao longo de 12 meses.
+	-> Quem tem direito a 40 pontos na CNH: apenas os condutores que não cometeram nenhuma infração grave dentro de um ano. 
+- Exemplo do Wireframe:
+	- Placa de sentido único e o condutor transitar na contramão, leva multa e 7 pontos na carteira.
