@@ -1,7 +1,5 @@
 # transit village
 
----
-
 *Roteiro do Jogo "Transit Village"*
 
 Introdução:
@@ -31,8 +29,6 @@ Conclusão:
  O jogo utiliza computação em blocos.
 
  Tecnologias utilizadas: Java, Tilemap, Pixel Art. 
-
----
 
 Observações:
 
