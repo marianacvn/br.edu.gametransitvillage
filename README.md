@@ -1,4 +1,4 @@
-# transit village
+# game-transit-village
 
 *Roteiro do Jogo "Transit Village"*
 
