@@ -32,8 +32,6 @@ public abstract class BaseFrame extends JFrame{
 		}
 	}
 
-	public JPanel defaultPanel;
-
 	public List<BasePanel> panels;
 	public List<GameButton> buttons;
 
@@ -44,8 +42,10 @@ public abstract class BaseFrame extends JFrame{
 		setLayout(null);
 
 		setUndecorated(true);
+		setLocation(0, 0);
+//		setExtendedState(JFrame.MAXIMIZED_VERT);
+//		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(false);
-		setLocationRelativeTo(null);
 	}
 
 	public JButton getButtonByKey(String key) {

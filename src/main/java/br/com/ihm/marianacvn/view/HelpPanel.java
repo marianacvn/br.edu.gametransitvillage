@@ -16,7 +16,7 @@ public class HelpPanel extends BasePanel {
 		g.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 50));
 		g.drawString("Tutorial", (BaseFrame.DEFAULT_WIDTH/2)-163, 164);
 
-		g.dispose();
+//		g.dispose();
 	}
 
 }

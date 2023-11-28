@@ -11,7 +11,7 @@ public class StartPanel extends BasePanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(backgroundImage.getImage(), 0, 0, null);
-		g.dispose();
+//		g.dispose();
 	}
 
 }

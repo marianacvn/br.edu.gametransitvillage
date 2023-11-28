@@ -25,7 +25,7 @@ public class CreditPanel extends BasePanel {
 		g.drawString("Professor: Richarlyson D'Emery", 210, 240);
 		g.drawString("Universidade Federal Rural de Pernambuco - UFRPE", 135, 260);
 		g.drawString("Unidade Acad�mica de Serra Talhada - UAST", 175, 280);
-		g.dispose();
+//		g.dispose();
 	}
 
 }

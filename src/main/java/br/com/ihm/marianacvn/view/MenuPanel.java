@@ -17,7 +17,7 @@ public class MenuPanel extends BasePanel {
 		g.setFont(new Font("Arial", Font.BOLD, 20));
 		g.drawString(" Desenvolvido por Mariana, 2023", 165, BaseFrame.DEFAULT_HEIGHT - 20);
 
-		g.dispose();
+//		g.dispose();
 	}
 
 }
