@@ -8,6 +8,7 @@ import java.util.Objects;
 public class GameButton extends JButton {
 
     private String key;
+    private int x,  y,  width,  height;
 
     public GameButton(String key, int marginBottom, int marginLeft, int width, int height) {
         this.key = key;
@@ -17,7 +18,25 @@ public class GameButton extends JButton {
                 isZero(width, BaseFrame.DEFAULT_WIDTH_BUTTON),
                 isZero(height, BaseFrame.DEFAULT_HEIGHT_BUTTON)
         );
+        x = getX();
+        y = getY();
+        this.width = getWidth();
+        this.height = getHeight();
         setIcon(new ImageIcon(Objects.requireNonNull(GameButton.class.getResource(BaseFrame.DEFAULT_BUTTONS_PATH + "btn-" + key + ".png"))));
+    }
+
+    public GameButton(String key, int x, int y, int squareSize) {
+        this.key = key;
+        setBounds(x, y, isZero(squareSize, BaseFrame.DEFAULT_WIDTH_BUTTON), isZero(squareSize, BaseFrame.DEFAULT_HEIGHT_BUTTON));
+        setIcon(new ImageIcon(Objects.requireNonNull(GameButton.class.getResource(BaseFrame.DEFAULT_BUTTONS_PATH + "btn-" + key + ".png"))));
+    }
+
+    public void changePosition(int x, int y) {
+        setBounds(x, y, width, height);
+    }
+
+    public void resetPosition() {
+    	setBounds(this.x, this.y, width, height);
     }
 
     public String getKey() {

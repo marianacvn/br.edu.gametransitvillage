@@ -1,6 +1,8 @@
 package br.com.ihm.marianacvn.view;
 
+import br.com.ihm.marianacvn.controller.GameController;
 import br.com.ihm.marianacvn.model.Camada;
+import br.com.ihm.marianacvn.model.GameLoop;
 import br.com.ihm.marianacvn.model.Logica;
 import br.com.ihm.marianacvn.model.Personagem;
 
@@ -11,28 +13,57 @@ public class MapPanel extends BasePanel {
 
 	private Logica logica;
 	private Personagem personagem;
+	private static final double ZOOM_LEVEL = 2.0;
 
 	public MapPanel(String key) {
 		super(key);
+		setDoubleBuffered(true);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-//
-		g.drawImage(logica.getCamada("floor").camada, 0, 0, null);
-		g.drawImage(logica.getCamada("colision").camada, 0, 0, null);
+		// Create an off-screen image for double buffering
+		Image offscreenImage = createImage(getWidth(), getHeight());
+		Graphics offscreenGraphics = offscreenImage.getGraphics();
 
-		g.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
-//		if (multplayer)
-//			g.drawImage(personagens.get(1).getSprites()[personagens.get(1).getAparencia()], personagens.get(1).getX(), personagens.get(1).getY(), null);
-//		else
-//			g.drawImage(personagens.get(1).getSprites()[personagens.get(1).getAparencia()], 1000, 1000, null);
-		g.drawImage(logica.getCamada("top").camada, 0, 0, null);
+		// Draw on the off-screen image
+		super.paintComponent(offscreenGraphics);
+		Graphics2D g2d = (Graphics2D) offscreenGraphics;
 
-//		g.dispose();
+		double xOffset = personagem.getX() - getWidth() / (2 * ZOOM_LEVEL);
+		double yOffset = personagem.getY() - getHeight() / (2 * ZOOM_LEVEL);
+
+		g2d.scale(ZOOM_LEVEL, ZOOM_LEVEL);
+		g2d.translate(-xOffset, -yOffset);
+
+		g2d.drawImage(logica.getCamada("floor").camada, 0, 0, null);
+		g2d.drawImage(logica.getCamada("colision").camada, 0, 0, null);
+
+//		showColisionRectangle(g);
+
+		g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
+		g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
+
+// TODO: FPS
+		g2d.setColor(Color.WHITE);
+		System.out.println(GameLoop.frameCount);
+		g2d.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
+		g2d.drawString("FPS: " + GameLoop.frameCount, 20, BaseFrame.DEFAULT_HEIGHT - 20);
+
+		// Dispose the off-screen graphics
+		offscreenGraphics.dispose();
+
+		// Draw the off-screen image to the screen
+		g.drawImage(offscreenImage, 0, 0, this);
 	}
 
+	private void showColisionRectangle(Graphics g) {
+		g.setColor(Color.RED); // Cor dos retângulos
+		for (Rectangle collisionRect : GameController.colisao) {
+			g.drawRect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
+		}
+		g.drawRect(personagem.getX()-Personagem.DIFF_COLISAO, personagem.getY()-Personagem.DIFF_COLISAO, personagem.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2), personagem.getAlturaPersonagem()+Personagem.DIFF_COLISAO);
+	}
 
 	public Logica getLogica() {
 		return logica;

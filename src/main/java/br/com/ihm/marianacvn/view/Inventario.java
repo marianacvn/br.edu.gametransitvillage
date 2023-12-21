@@ -4,6 +4,7 @@ import br.com.ihm.marianacvn.exception.ViewException;
 import br.com.ihm.marianacvn.model.InventoryInfo;
 import br.com.ihm.marianacvn.model.Personagem;
 import br.com.ihm.marianacvn.statics.InventoryInfos;
+import br.com.ihm.marianacvn.utils.ErrorHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,7 @@ public class Inventario extends JPanel{
 				singlePlayer(g);
 			}
 		} catch (ViewException | IOException e) {
-			e.printStackTrace();
+			ErrorHandler.logAndExit(e);
 		}
 	}
 

@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class BaseFrame extends JFrame{
+public abstract class BaseFrame extends JFrame {
 	public static final int DEFAULT_WIDTH = 1920;
 	public static final int DEFAULT_HEIGHT = 1080;
 	public static final int DEFAULT_WIDTH_BUTTON = 300;
 	public static final int DEFAULT_HEIGHT_BUTTON = 60;
+	public static final int CENTER_DEFAULT_Y = (DEFAULT_HEIGHT / 2);
+	public static final int CENTER_DEFAULT_X = (DEFAULT_WIDTH / 2);
+	public static final int CENTER_DEFAULT_X_BUTTON = ((DEFAULT_WIDTH-DEFAULT_WIDTH_BUTTON )/ 2);
 	public static final String DEFAULT_BUTTONS_PATH = "/assets/images/buttons/";
 	private static final String DEFAULT_MENU_PANEL_KEY = "menu";
 	private static final String DEFAULT_BACK_BUTTON_KEY = "voltar";
@@ -23,7 +26,7 @@ public abstract class BaseFrame extends JFrame{
 
 	static {
 		try {
-			String fName = "/assets/fonts/ka1.ttf";
+			String fName = "/assets/fonts/Twitchy.TV.ttf";
 			InputStream is = BaseFrame.class.getResourceAsStream(fName);
 			DEFAULT_FONT = Font.createFont(Font.TRUETYPE_FONT, is);
 		} catch (FontFormatException | IOException e) {
@@ -48,7 +51,7 @@ public abstract class BaseFrame extends JFrame{
 		setResizable(false);
 	}
 
-	public JButton getButtonByKey(String key) {
+	public GameButton getButtonByKey(String key) {
 		for (GameButton button : buttons) {
 			if (button.getKey().equals(key)) {
 				return button;

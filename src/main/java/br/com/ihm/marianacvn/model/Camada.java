@@ -99,17 +99,13 @@ public class Camada {
 	 */
 	public List<Rectangle> montarColisao() {
 		List<Rectangle> tmp = new ArrayList<Rectangle>();
-		for (int i = 0; i < mapaWidth; i++) {
-			for (int j = 0; j < mapaHeight; j++) {
+		for (int i = 0; i < mapaHeight; i++) {
+			for (int j = 0; j < mapaWidth; j++) {
 				if (mapa[i][j] != 0) {
-					tmp.add(new Rectangle((j * tileHeight), (i * tileWidth), tileWidth - 5, tileHeight - 5));
+					tmp.add(new Rectangle((j * tileHeight), (i * tileWidth), tileWidth, tileHeight));
 				}
 			}
 		}
-		tmp.add(new Rectangle(0, 0, 513, 1)); // topo
-		tmp.add(new Rectangle(0, 512, 513, 1)); // baixo
-		tmp.add(new Rectangle(0, 0, 1, 513)); // esquerda
-		tmp.add(new Rectangle(513, 0, 1, 513)); // direita
 		return tmp;
 	}
 
