@@ -6,13 +6,11 @@ import br.com.ihm.marianacvn.utils.ErrorHandler;
 import br.com.ihm.marianacvn.utils.MusicPlayer;
 import br.com.ihm.marianacvn.view.*;
 import br.com.ihm.marianacvn.view.components.GameButton;
+import br.com.ihm.marianacvn.view.components.GameFaseLabel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.IOException;
 
 public class GameController extends KeyAdapter implements ActionListener {
@@ -20,6 +18,7 @@ public class GameController extends KeyAdapter implements ActionListener {
     private MapPanel mapPanel;
     private Logica logica;
     private Personagem personagem;
+    private Personagem veiculo;
     private MusicPlayer introGamePlayer;
     private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
@@ -69,6 +68,19 @@ public class GameController extends KeyAdapter implements ActionListener {
         for (GameButton button : mainFrame.buttons) {
             button.addActionListener(this);
         }
+        for (GameFaseLabel fase : ((NewGamePanel) mainFrame.getPanelByKey("new-game")).getFases()) {
+            fase.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    if (!fase.isBlocked()) {
+                        fase.setSelected(true);
+                        fase.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+                    }
+                }
+            } );
+        }
+
         ((NewGamePanel) mainFrame.getPanelByKey("new-game")).getRightButton().addActionListener(this);
         ((NewGamePanel) mainFrame.getPanelByKey("new-game")).getLeftButton().addActionListener(this);
 
@@ -94,7 +106,8 @@ public class GameController extends KeyAdapter implements ActionListener {
         mapPanel = (MapPanel) mainFrame.getPanelByKey("map");
         mapPanel.setLogica(logica);
         mapPanel.setPersonagem(personagem);
-        colisao = logica.getCamada("colision").montarColisao();
+        mapPanel.setVeiculo(veiculo);
+        colisao = logica.getCamada("colision").montarColisao(veiculo);
         run();
     }
 
@@ -113,16 +126,18 @@ public class GameController extends KeyAdapter implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-//		// Game
+		// Game
         if (mainFrame.getButtonByKey("jogar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("new-game")) {
             String player = ((NewGamePanel) mainFrame.getCurrentPanel()).getCurrentPlayer();
+            // TODO: Colocar uma validaçao para verificar se o jogador selecionou uma fase, se não deve  exibir uma mensagem de alerta, ainda não sei o design do alerta.
+            String veiculoName = ((NewGamePanel) mainFrame.getPanelByKey("new-game")).getFaseAtiva().getSpriteByFase();
+            int veiculoSize = veiculoName.equals("pizza") ? 64 :  128;
             personagem = new Personagem(8, 64, 64, 13, 21, 30, 500, "/assets/images/sprite/" + (player.equals("male-player") ? "character-male_universal" :  "character-female_universal") + ".png");
+            veiculo = new Personagem(8, veiculoSize, veiculoSize, 6, 4, 30, 350, "/assets/images/sprite/" + veiculoName + "-sprite.png");
 
             SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() throws Exception {
-
-//                    personagem = new Personagem(8, 64, 64, 13, 21, 30, 500, "/assets/images/sprite/" + (player.equals("male-player") ? "character-male_universal" :  "character-female_universal") + ".png");
                     mainFrame.getButtonByKey("jogar").setVisible(false);
                     mainFrame.getButtonByKey("voltar").setVisible(false);
                     mainFrame.getPanelByKey("new-game").setVisible(false);

@@ -13,6 +13,7 @@ public class MapPanel extends BasePanel {
 
 	private Logica logica;
 	private Personagem personagem;
+	private Personagem veiculo;
 	private static final double ZOOM_LEVEL = 2.0;
 
 	public MapPanel(String key) {
@@ -39,9 +40,15 @@ public class MapPanel extends BasePanel {
 		g2d.drawImage(logica.getCamada("floor").camada, 0, 0, null);
 		g2d.drawImage(logica.getCamada("colision").camada, 0, 0, null);
 
-//		showColisionRectangle(g);
+		// Desenha as colisões, use apenas para testes
+		showColisionRectangle(g2d);
 
+		// Desenha o veículo a ser utilizado
+		g2d.drawImage(veiculo.getSprites()[veiculo.getAparencia()], veiculo.getX(), veiculo.getY(), null);
+
+		// Desenha o personagem
 		g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
+
 		g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
 
 // TODO: FPS
@@ -57,12 +64,13 @@ public class MapPanel extends BasePanel {
 		g.drawImage(offscreenImage, 0, 0, this);
 	}
 
-	private void showColisionRectangle(Graphics g) {
-		g.setColor(Color.RED); // Cor dos retângulos
+	private void showColisionRectangle(Graphics2D g2d) {
+		g2d.setColor(Color.RED); // Cor dos retângulos
 		for (Rectangle collisionRect : GameController.colisao) {
-			g.drawRect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
+			g2d.drawRect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
 		}
-		g.drawRect(personagem.getX()-Personagem.DIFF_COLISAO, personagem.getY()-Personagem.DIFF_COLISAO, personagem.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2), personagem.getAlturaPersonagem()+Personagem.DIFF_COLISAO);
+		g2d.drawRect(personagem.getX()-Personagem.DIFF_COLISAO, personagem.getY()-Personagem.DIFF_COLISAO, personagem.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2), personagem.getAlturaPersonagem()+Personagem.DIFF_COLISAO);
+		g2d.drawRect(veiculo.getX()-Personagem.DIFF_COLISAO, veiculo.getY()-Personagem.DIFF_COLISAO, veiculo.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2), veiculo.getAlturaPersonagem()+Personagem.DIFF_COLISAO);
 	}
 
 	public Logica getLogica() {
@@ -79,5 +87,13 @@ public class MapPanel extends BasePanel {
 
 	public void setPersonagem(Personagem personagem) {
 		this.personagem = personagem;
+	}
+
+	public Personagem getVeiculo() {
+		return veiculo;
+	}
+
+	public void setVeiculo(Personagem veiculo) {
+		this.veiculo = veiculo;
 	}
 }

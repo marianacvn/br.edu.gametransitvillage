@@ -66,8 +66,12 @@ public class Personagem extends Sprite {
     }
 
     public boolean colisao(List<Rectangle> tmp, int x,int y) {
-        Rectangle personagem = new Rectangle(getX()+x-DIFF_COLISAO, getY()+y-DIFF_COLISAO,
-                getLarguraPersonagem()+(DIFF_COLISAO*2), getAlturaPersonagem()+DIFF_COLISAO);
+        Rectangle personagem = new Rectangle(
+                getX()+x-DIFF_COLISAO,
+                getY()+y-DIFF_COLISAO,
+                getLarguraPersonagem()+(DIFF_COLISAO*2),
+                getAlturaPersonagem()+DIFF_COLISAO
+        );
         for(Rectangle rectangle : tmp) {
             if(rectangle.intersects(personagem)){
                 return true;
