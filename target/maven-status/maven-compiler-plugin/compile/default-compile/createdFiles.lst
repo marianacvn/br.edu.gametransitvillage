@@ -1,9 +1,7 @@
 br/com/ihm/marianacvn/model/GameLoop.class
-br/com/ihm/marianacvn/view/CreditPanel.class
 br/com/ihm/marianacvn/model/InventoryInfo$Type.class
 br/com/ihm/marianacvn/model/Personagem.class
 br/com/ihm/marianacvn/model/Camada.class
-br/com/ihm/marianacvn/model/Logica$Posicao.class
 br/com/ihm/marianacvn/view/BaseFrame.class
 br/com/ihm/marianacvn/app/App.class
 br/com/ihm/marianacvn/model/Sprite.class
@@ -20,7 +18,6 @@ br/com/ihm/marianacvn/controller/GameController$1.class
 br/com/ihm/marianacvn/view/NewGamePanel.class
 br/com/ihm/marianacvn/view/LoadingPanel.class
 br/com/ihm/marianacvn/utils/Config.class
-br/com/ihm/marianacvn/view/Inventario.class
 br/com/ihm/marianacvn/view/BasePanel.class
 br/com/ihm/marianacvn/exception/ViewException.class
 br/com/ihm/marianacvn/model/InventoryInfo.class
