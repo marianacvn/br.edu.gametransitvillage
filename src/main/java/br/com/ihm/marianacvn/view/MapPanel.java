@@ -1,99 +1,106 @@
 package br.com.ihm.marianacvn.view;
 
 import br.com.ihm.marianacvn.controller.GameController;
-import br.com.ihm.marianacvn.model.Camada;
-import br.com.ihm.marianacvn.model.GameLoop;
-import br.com.ihm.marianacvn.model.Logica;
-import br.com.ihm.marianacvn.model.Personagem;
+import br.com.ihm.marianacvn.model.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.*;
-import java.util.List;
 
+@Getter
+@Setter
 public class MapPanel extends BasePanel {
 
-	private Logica logica;
-	private Personagem personagem;
-	private Personagem veiculo;
-	private static final double ZOOM_LEVEL = 2.0;
+    private Logica logica;
+    private Personagem personagem;
+    private Veiculo veiculo;
+    private static final double ZOOM_LEVEL = 2.0;
 
-	public MapPanel(String key) {
-		super(key);
-		setDoubleBuffered(true);
-	}
+    public MapPanel(String key, int x, int y, int width, int height) {
+        super(key, x, y, width, height);
+        setDoubleBuffered(true);
+    }
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		// Create an off-screen image for double buffering
-		Image offscreenImage = createImage(getWidth(), getHeight());
-		Graphics offscreenGraphics = offscreenImage.getGraphics();
+    @Override
+    protected void paintComponent(Graphics g) {
 
-		// Draw on the off-screen image
-		super.paintComponent(offscreenGraphics);
-		Graphics2D g2d = (Graphics2D) offscreenGraphics;
+        // Create an off-screen image for double buffering
+        Image offscreenImage = createImage(getWidth(), getHeight());
+        Graphics offscreenGraphics = offscreenImage.getGraphics();
 
-		double xOffset = personagem.getX() - getWidth() / (2 * ZOOM_LEVEL);
-		double yOffset = personagem.getY() - getHeight() / (2 * ZOOM_LEVEL);
+        // Draw on the off-screen image
+        super.paintComponent(offscreenGraphics);
+        Graphics2D g2d = (Graphics2D) offscreenGraphics;
 
-		g2d.scale(ZOOM_LEVEL, ZOOM_LEVEL);
-		g2d.translate(-xOffset, -yOffset);
+        double xOffset = personagem.isAtivo() ? personagem.getX() - getWidth() / (2 * ZOOM_LEVEL) : veiculo.getX() - getWidth() / (2 * ZOOM_LEVEL);
+        double yOffset = personagem.isAtivo() ? personagem.getY() - getHeight() / (2 * ZOOM_LEVEL) : veiculo.getY() - getHeight() / (2 * ZOOM_LEVEL);
 
-		g2d.drawImage(logica.getCamada("floor").camada, 0, 0, null);
-		g2d.drawImage(logica.getCamada("colision").camada, 0, 0, null);
+        g2d.scale(ZOOM_LEVEL, ZOOM_LEVEL);
+        g2d.translate(-xOffset, -yOffset);
 
-		// Desenha as colisões, use apenas para testes
-		showColisionRectangle(g2d);
+        paintWithoutZoom(g2d);
 
-		// Desenha o veículo a ser utilizado
-		g2d.drawImage(veiculo.getSprites()[veiculo.getAparencia()], veiculo.getX(), veiculo.getY(), null);
+        // Desenha as colisões, use apenas para testes
+        showColisionRectangle(g2d); // TODO: Descomentar para mostrar os retângulos de colisão
 
-		// Desenha o personagem
-		g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
+        // TODO: FPS  -  Da forma que está o fps é exibido apenas ao final da tela
+        g2d.setColor(Color.WHITE);
+        //System.out.println(GameLoop.frameCount);
+        g2d.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
+        g2d.drawString("FPS: " + GameLoop.frameCount, 20, BaseFrame.DEFAULT_HEIGHT - 20);
 
-		g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
+        if ( veiculo.colisao(GameController.colisao, veiculo.getX(), veiculo.getY())) {
+            drawGameOverPanel(g2d, veiculo.getX(), veiculo.getY());
+        }
 
-// TODO: FPS
-		g2d.setColor(Color.WHITE);
-		System.out.println(GameLoop.frameCount);
-		g2d.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
-		g2d.drawString("FPS: " + GameLoop.frameCount, 20, BaseFrame.DEFAULT_HEIGHT - 20);
+        // Dispose the off-screen graphics
+        offscreenGraphics.dispose();
 
-		// Dispose the off-screen graphics
-		offscreenGraphics.dispose();
+        // Draw the off-screen image to the screen
+        g.drawImage(offscreenImage, 0, 0, this);
+    }
 
-		// Draw the off-screen image to the screen
-		g.drawImage(offscreenImage, 0, 0, this);
-	}
+    public void paintWithoutZoom(Graphics2D g2d) {
 
-	private void showColisionRectangle(Graphics2D g2d) {
-		g2d.setColor(Color.RED); // Cor dos retângulos
-		for (Rectangle collisionRect : GameController.colisao) {
-			g2d.drawRect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
-		}
-		g2d.drawRect(personagem.getX()-Personagem.DIFF_COLISAO, personagem.getY()-Personagem.DIFF_COLISAO, personagem.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2), personagem.getAlturaPersonagem()+Personagem.DIFF_COLISAO);
-		g2d.drawRect(veiculo.getX()-Personagem.DIFF_COLISAO, veiculo.getY()-Personagem.DIFF_COLISAO, veiculo.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2), veiculo.getAlturaPersonagem()+Personagem.DIFF_COLISAO);
-	}
+        g2d.drawImage(logica.getCamada("floor").camada, 0, 0, null);
+        g2d.drawImage(logica.getCamada("colision").camada, 0, 0, null);
 
-	public Logica getLogica() {
-		return logica;
-	}
+        g2d.drawImage(veiculo.getSprites()[veiculo.getAparencia()], veiculo.getX(), veiculo.getY(), null);
 
-	public void setLogica(Logica logica) {
-		this.logica = logica;
-	}
+        // Desenha o personagem
+        if (personagem.isAtivo()) {
+            g2d.drawImage(personagem.getSprites()[personagem.getAparencia()], personagem.getX(), personagem.getY(), null);
+        }
 
-	public Personagem getPersonagem() {
-		return personagem;
-	}
+        g2d.drawImage(logica.getCamada("top").camada, 0, 0, null);
 
-	public void setPersonagem(Personagem personagem) {
-		this.personagem = personagem;
-	}
+    }
 
-	public Personagem getVeiculo() {
-		return veiculo;
-	}
+    private void showColisionRectangle(Graphics2D g2d) {
 
-	public void setVeiculo(Personagem veiculo) {
-		this.veiculo = veiculo;
-	}
+        g2d.setColor(Color.RED); // Cor dos retângulos de colisão
+        for (Rectangle collisionRect : GameController.colisao) {
+            g2d.drawRect(collisionRect.x, collisionRect.y, collisionRect.width, collisionRect.height);
+        }
+        g2d.drawRect(personagem.getX() - Personagem.DIFF_COLISAO, personagem.getY() - Personagem.DIFF_COLISAO, personagem.getLarguraPersonagem() + (Personagem.DIFF_COLISAO * 2), personagem.getAlturaPersonagem() + Personagem.DIFF_COLISAO);
+        g2d.drawRect(veiculo.getX() - Veiculo.DIFF_COLISAO, veiculo.getY(), veiculo.getLarguraPersonagem() + (Veiculo.DIFF_COLISAO * 2), veiculo.getAlturaPersonagem() + Veiculo.DIFF_COLISAO);
+
+        g2d.setColor(Color.GREEN); // Cor dos retângulos de interação
+        g2d.drawRect((int) personagem.getBounds().getX(), (int) personagem.getBounds().getY(), (int) personagem.getBounds().getWidth(), (int) personagem.getBounds().getHeight());
+        g2d.drawRect((int) veiculo.getBounds().getX(), (int) veiculo.getBounds().getY(), (int) veiculo.getBounds().getWidth(), (int) veiculo.getBounds().getHeight());
+
+    }
+
+    private void drawGameOverPanel(Graphics2D g2d, int x, int y) {
+        String message = "Game Over";
+        Font font = new Font("Arial", Font.BOLD, 30);
+//        FontMetrics metrics = g2d.getFontMetrics(font);
+
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(veiculo.getX()-100, veiculo.getY()-100, 300, 150);
+        g2d.setFont(font);
+        g2d.setColor(Color.RED);
+        g2d.drawString(message, x, y);
+    }
+
 }

@@ -1,24 +1,36 @@
 package br.com.ihm.marianacvn.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class Logica {
 	private List<Personagem> personagens;
 	private int num1, num2;
-	private List<Camada> camadas;
+	private final List<Camada> camadas;
+	private List<Fase> fases;
 	private boolean ganhou;
 
 	public Logica() {
-		camadas = new ArrayList<Camada>();
+		camadas = new ArrayList<>();
+		fases = new ArrayList<>();
 		camadas.add(new Camada("floor", 60, 40, 32, 32, "/assets/images/tiled-project/grid-tileset.png", "/assets/tiled/floor.txt"));
 		camadas.add(new Camada("colision", 60, 40, 32, 32, "/assets/images/tiled-project/grid-tileset.png", "/assets/tiled/colision.txt"));
 		camadas.add(new Camada("top", 60, 40, 32, 32, "/assets/images/tiled-project/grid-tileset.png", "/assets/tiled/top.txt"));
 
-//		camadaFundo = Camadas.fase1()[0];
-//		camadaColisao = Camadas.fase1()[1];
-//		camadaTopo = Camadas.fase1()[2];
-
+		Fase fase1 = new Fase();
+		List<String> regras = List.of(
+				"- A cada infração cometida leva pontos na carteira de acordo com a gravidade.",
+				"- A cada entrega realizada ganhará 10 moedas.",
+				"- Se o condutor conseguir 100 moedas será liberado a próxima fase."
+		);
+		fase1.getMissoes().add(new Missao("Missão 1: Entregador de Pizza", "Olá, seja bem vindo(a) à Transit Village, a nossa primeira missão é entregar as pizzas no objetivo sem infrigir nenhuma lei de trânsito, preste atenção nas placas e sinalizações. Boa sorte, para cada entrega concluída você ganha moedas e ao infrigir uma lei perde moedas.", regras, new Rectangle(100, 100, 64, 64),false, 10));
+		fases.add(fase1);
 	}
 
 	public void iniciarFase() {
@@ -82,40 +94,6 @@ public class Logica {
 //            }
 //
 //        }
-	}
-
-	private class Posicao {
-		int x;
-		int y;
-
-		public Posicao(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
-
-	public int getNum1() {
-		return num1;
-	}
-
-	public void setNum1(int num1) {
-		this.num1 = num1;
-	}
-
-	public int getNum2() {
-		return num2;
-	}
-
-	public void setNum2(int num2) {
-		this.num2 = num2;
-	}
-
-	public boolean isGanhou() {
-		return ganhou;
-	}
-
-	public List<Camada> getCamadas() {
-		return camadas;
 	}
 
 	public Camada getCamada(String key) {

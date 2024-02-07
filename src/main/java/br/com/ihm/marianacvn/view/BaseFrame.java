@@ -1,6 +1,7 @@
 package br.com.ihm.marianacvn.view;
 
 import br.com.ihm.marianacvn.view.components.GameButton;
+import br.com.ihm.marianacvn.view.components.GameComandoLabel;
 
 import javax.swing.*;
 import java.awt.*;

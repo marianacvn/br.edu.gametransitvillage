@@ -6,26 +6,37 @@ import br.com.ihm.marianacvn.utils.ErrorHandler;
 import br.com.ihm.marianacvn.utils.MusicPlayer;
 import br.com.ihm.marianacvn.view.*;
 import br.com.ihm.marianacvn.view.components.GameButton;
+import br.com.ihm.marianacvn.view.components.GameComandoLabel;
 import br.com.ihm.marianacvn.view.components.GameFaseLabel;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Setter
 public class GameController extends KeyAdapter implements ActionListener {
     private MainFrame mainFrame;
     private MapPanel mapPanel;
+    private MinimapPanel minimapPanel;
+    private ComandosPanel comandosPanel;
+    private InventoryPanel inventoryPanel;
+    private List<GameComandoLabel> comandos;
+    private List<GameComandoLabel> filaComandos;
     private Logica logica;
     private Personagem personagem;
-    private Personagem veiculo;
+    private Veiculo veiculo;
     private MusicPlayer introGamePlayer;
-    private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[1]; // TODO : Mudar para monitor 0
+    private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
-    public static java.util.List<Rectangle> colisao;
-    private boolean cima, baixo, direita, esquerda;
-    private int up, down, left, right;
-    private boolean  musicStatus;
+    public static List<Rectangle> colisao;
+    private boolean musicStatus;
+    private boolean isRunning;
 
     public GameController() throws IOException {
 
@@ -34,7 +45,7 @@ public class GameController extends KeyAdapter implements ActionListener {
             // Carrega as configurações do jogo (volume, idioma, etc)
             try {
                 Config.load();
-            } catch (IOException  e) {
+            } catch (IOException e) {
                 ErrorHandler.logAndExit(e);
             }
             introGamePlayer = new MusicPlayer("/assets/audios/kygo-stranger-things.mp3");
@@ -78,7 +89,7 @@ public class GameController extends KeyAdapter implements ActionListener {
                         fase.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
                     }
                 }
-            } );
+            });
         }
 
         ((NewGamePanel) mainFrame.getPanelByKey("new-game")).getRightButton().addActionListener(this);
@@ -102,12 +113,21 @@ public class GameController extends KeyAdapter implements ActionListener {
     }
 
     private void iniciarJogo() {
+        // Cria a lógica do jogo
         logica = new Logica();
+        inventoryPanel.setLogica(logica);
+        // Carrega o mapa e insere as classes necessárias
         mapPanel = (MapPanel) mainFrame.getPanelByKey("map");
         mapPanel.setLogica(logica);
         mapPanel.setPersonagem(personagem);
         mapPanel.setVeiculo(veiculo);
-        colisao = logica.getCamada("colision").montarColisao(veiculo);
+        // Carrega o inventário e o numimap
+//        inventoryPanel = (InventoryPanel) mainFrame.getPanelByKey("inventory");
+        minimapPanel = (MinimapPanel) mainFrame.getPanelByKey("minimap");
+        // Cria as coliões
+        colisao = logica.getCamada("colision").montarColisao();
+        // Inicia o game loop
+        isRunning = true;
         run();
     }
 
@@ -122,20 +142,22 @@ public class GameController extends KeyAdapter implements ActionListener {
         gameLoop.start();
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
-		// Game
+        // Game
         if (mainFrame.getButtonByKey("jogar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("new-game")) {
             String player = ((NewGamePanel) mainFrame.getCurrentPanel()).getCurrentPlayer();
             // TODO: Colocar uma validaçao para verificar se o jogador selecionou uma fase, se não deve  exibir uma mensagem de alerta, ainda não sei o design do alerta.
             String veiculoName = ((NewGamePanel) mainFrame.getPanelByKey("new-game")).getFaseAtiva().getSpriteByFase();
-            int veiculoSize = veiculoName.equals("pizza") ? 64 :  128;
-            personagem = new Personagem(8, 64, 64, 13, 21, 30, 500, "/assets/images/sprite/" + (player.equals("male-player") ? "character-male_universal" :  "character-female_universal") + ".png");
-            veiculo = new Personagem(8, veiculoSize, veiculoSize, 6, 4, 30, 350, "/assets/images/sprite/" + veiculoName + "-sprite.png");
+            int veiculoSize = veiculoName.equals("pizza") ? 64 : 128;
+            veiculo = new Veiculo(8, veiculoSize, veiculoSize, 6, 4, 40, 384, "/assets/images/sprite/" + veiculoName + "-sprite.png");
+            personagem = new Personagem(8, 64, 64, 13, 21, 30, 500, "/assets/images/sprite/" + (player.equals("male-player") ? "character-male_universal" : "character-female_universal") + ".png", player, veiculo);
 
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            inventoryPanel = (InventoryPanel) mainFrame.getPanelByKey("inventory");
+            inventoryPanel.setPersonagem(personagem);
+
+            SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
                 protected Void doInBackground() throws Exception {
                     mainFrame.getButtonByKey("jogar").setVisible(false);
@@ -152,6 +174,8 @@ public class GameController extends KeyAdapter implements ActionListener {
                 protected void done() {
                     mainFrame.getPanelByKey("loading").setVisible(false);
                     mainFrame.getPanelByKey("map").setVisible(true);
+                    mainFrame.getPanelByKey("minimap").setVisible(true);
+                    mainFrame.getPanelByKey("inventory").setVisible(true);
                 }
             };
 
@@ -161,7 +185,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         if (mainFrame.getButtonByKey("novo") == e.getSource()) {
             mainFrame.disableMenuComponents("new-game");
             mainFrame.getButtonByKey("jogar").setVisible(true);
-            mainFrame.getButtonByKey("jogar").changePosition(BaseFrame.CENTER_DEFAULT_X_BUTTON,  850);
+            mainFrame.getButtonByKey("jogar").changePosition(BaseFrame.CENTER_DEFAULT_X_BUTTON, 850);
         }
         if (mainFrame.getButtonByKey("jogar") == e.getSource()) {
             mainFrame.disableMenuComponents("start");
@@ -203,241 +227,58 @@ public class GameController extends KeyAdapter implements ActionListener {
             musicButtonStatus();
         }
 
+        if (comandosPanel != null && comandosPanel.getPlayButton() == e.getSource() && !filaComandos.isEmpty()) {
+            veiculo.setFilaComandos(filaComandos);
+            veiculo.movimento();
+        }
 
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
 
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            System.out.println("Pause game");
+        if (isRunning) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                if (personagem.getBounds().intersects(veiculo.getBounds())) {
+                    personagem.setAtivo(false);
+
+                    comandosPanel = (ComandosPanel) mainFrame.getPanelByKey("comandos");
+                    veiculo.setComandosPanel(comandosPanel);
+                    filaComandos = new ArrayList<>();
+                    comandosPanel.setVisible(true);
+                    comandos = comandosPanel.comandos;
+
+                    for (GameComandoLabel comando : comandos) {
+                        MouseHandler mouseHandler = new MouseHandler(filaComandos, comandosPanel);
+                        comando.addMouseListener(mouseHandler);
+                        comando.addMouseMotionListener(mouseHandler);
+                    }
+
+                    comandosPanel.getPlayButton().addActionListener(this);
+                }
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                System.out.println("Pause game");
+            }
+
+            if (personagem.isAtivo()) {
+                if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(true);
+                if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(true);
+                if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(true);
+                if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(true);
+
+                personagem.movimento();
+            }
         }
-
-        if (e.getKeyCode() == KeyEvent.VK_W) cima = true;
-        if (e.getKeyCode() == KeyEvent.VK_S) baixo = true;
-        if (e.getKeyCode() == KeyEvent.VK_A) esquerda = true;
-        if (e.getKeyCode() == KeyEvent.VK_D) direita = true;
-
-        movimento();
-
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) cima = false;
-        if (e.getKeyCode() == KeyEvent.VK_S) baixo = false;
-        if (e.getKeyCode() == KeyEvent.VK_A) esquerda = false;
-        if (e.getKeyCode() == KeyEvent.VK_D) direita = false;
-    }
-
-    public void movimento() {
-        if (esquerda) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (xL > Personagem.DIFF_COLISAO) {
-                personagem.setX(xL - Personagem.VELOCIDADE);
-                personagem.setY(yL);
-                switch (left) {
-                    case 0:
-                        personagem.setAparencia(9);
-                        break;
-                    case 1:
-                        personagem.setAparencia(30);
-                        break;
-                    case 2:
-                        personagem.setAparencia(51);
-                        break;
-                    case 3:
-                        personagem.setAparencia(72);
-                        break;
-                    case 4:
-                        personagem.setAparencia(93);
-                        break;
-                    case 5:
-                        personagem.setAparencia(114);
-                        break;
-                    case 6:
-                        personagem.setAparencia(135);
-                        break;
-                    case 7:
-                        personagem.setAparencia(156);
-                        break;
-                    case 8:
-                        personagem.setAparencia(177);
-                        break;
-                    case 9:
-                        personagem.setAparencia(198);
-                        break;
-                    case 10:
-                        personagem.setAparencia(219);
-                        break;
-                }
-                if (left == 10) {
-                    left = 0;
-                } else {
-                    left++;
-                }
-
-            }
-        }
-        if (cima) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (yL > Personagem.DIFF_COLISAO) {
-                personagem.setX(xL);
-                personagem.setY(yL - Personagem.VELOCIDADE);
-                switch (up) {
-                    case 0:
-                        personagem.setAparencia(8);
-                        break;
-                    case 1:
-                        personagem.setAparencia(29);
-                        break;
-                    case 2:
-                        personagem.setAparencia(50);
-                        break;
-                    case 3:
-                        personagem.setAparencia(71);
-                        break;
-                    case 4:
-                        personagem.setAparencia(92);
-                        break;
-                    case 5:
-                        personagem.setAparencia(113);
-                        break;
-                    case 6:
-                        personagem.setAparencia(134);
-                        break;
-                    case 7:
-                        personagem.setAparencia(155);
-                        break;
-                    case 8:
-                        personagem.setAparencia(176);
-                        break;
-                    case 9:
-                        personagem.setAparencia(197);
-                        break;
-                    case 10:
-                        personagem.setAparencia(218);
-                        break;
-                }
-                if (up == 10) {
-                    up = 0;
-                } else {
-                    up++;
-                }
-            }
-
-        }
-        if (direita) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (xL < 1856 - Personagem.DIFF_COLISAO) {
-                personagem.setX(xL + Personagem.VELOCIDADE);
-                personagem.setY(yL);
-                switch (right) {
-                    case 0:
-                        personagem.setAparencia(11);
-                        break;
-                    case 1:
-                        personagem.setAparencia(32);
-                        break;
-                    case 2:
-                        personagem.setAparencia(53);
-                        break;
-                    case 3:
-                        personagem.setAparencia(74);
-                        break;
-                    case 4:
-                        personagem.setAparencia(95);
-                        break;
-                    case 5:
-                        personagem.setAparencia(116);
-                        break;
-                    case 6:
-                        personagem.setAparencia(137);
-                        break;
-                    case 7:
-                        personagem.setAparencia(158);
-                        break;
-                    case 8:
-                        personagem.setAparencia(179);
-                        break;
-                    case 9:
-                        personagem.setAparencia(200);
-                        break;
-                    case 10:
-                        personagem.setAparencia(221);
-                        break;
-                }
-                if (right == 10) {
-                    right = 0;
-                } else {
-                    right++;
-                }
-            }
-        }
-        if (baixo) {
-            int xL = personagem.getX();
-            int yL = personagem.getY();
-            if (yL < 1016 - Personagem.DIFF_COLISAO) {
-                personagem.setX(xL);
-                personagem.setY(yL + Personagem.VELOCIDADE);
-                switch (down) {
-                    case 0:
-                        personagem.setAparencia(10);
-                        break;
-                    case 1:
-                        personagem.setAparencia(31);
-                        break;
-                    case 2:
-                        personagem.setAparencia(52);
-                        break;
-                    case 3:
-                        personagem.setAparencia(73);
-                        break;
-                    case 4:
-                        personagem.setAparencia(94);
-                        break;
-                    case 5:
-                        personagem.setAparencia(115);
-                        break;
-                    case 6:
-                        personagem.setAparencia(136);
-                        break;
-                    case 7:
-                        personagem.setAparencia(157);
-                        break;
-                    case 8:
-                        personagem.setAparencia(178);
-                        break;
-                    case 9:
-                        personagem.setAparencia(199);
-                        break;
-                    case 10:
-                        personagem.setAparencia(220);
-                        break;
-                }
-                if (down == 10) {
-                    down = 0;
-                } else {
-                    down++;
-                }
-
-            }
-        }
-    }
-
-    public MapPanel getMapPanel() {
-        return mapPanel;
-    }
-
-    public MusicPlayer getIntroGamePlayer() {
-        return introGamePlayer;
-    }
-
-    public Logica getLogica() {
-        return logica;
+        if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(false);
+        if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
+        if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
+        if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
     }
 
 }

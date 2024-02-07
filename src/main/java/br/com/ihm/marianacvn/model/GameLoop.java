@@ -26,6 +26,7 @@ public class GameLoop {
             public void actionPerformed(ActionEvent e) {
                 gameController.montarMapa();
                 gameController.getMapPanel().repaint();
+                gameController.getMinimapPanel().repaint();
                 frames++;
 
                 long currentTime = System.currentTimeMillis();

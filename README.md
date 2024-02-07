@@ -1,10 +1,16 @@
-# game-transit-village
+# Transit Village -  Game
 
-*Roteiro do Jogo "Transit Village"*
+Telas:
+
+<img alt="user-page" src="/src/main/resources/assets/images/menu1_transit_village.png">
+
+<img alt="user-page" src="/src/main/resources/assets/images/menu2_transit_village.png">
+
+<img alt="user-page" src="/src/main/resources/assets/images/menu3_transit_village.png">
 
 Introdução:
 
-- O jogo se passa na cidade de Transit Village, famosa por suas baixas taxas de incidentes de trânsito, sendo considerada umas das cidades mais seguras quando se trata de tráfego.
+O jogo se passa na cidade de Transit Village, famosa por suas baixas taxas de incidentes de trânsito, sendo considerada umas das cidades mais seguras quando se trata de tráfego.
 
 Fase 1 - Personagem: Entregador de Pizza
 
@@ -26,9 +32,9 @@ Conclusão:
 
 - O jogo "Transit Village" desafia os jogadores a dominar as leis de trânsito em uma cidade modelo, garantindo que todos sigam as regras e evitando acidentes.
 
- O jogo utiliza computação em blocos.
+O jogo utiliza computação em blocos.
 
- Tecnologias utilizadas: Java, Tilemap, Pixel Art. 
+Tecnologias utilizadas: Java, Tilemap, Pixel Art.
 
 Observações:
 
@@ -37,8 +43,8 @@ Observações:
 - obs.: cada entrega vale moedas.
 - sempre que infrigir uma lei de trânsito, leva uma advertência e receberá pontos na carteira de acordo com a multa atribuída.
 - Regra atual de pontuação de acordo com CTB:
-	-> Quem tem direito a 20 pontos na CNH: esse critério é válido para os motoristas que cometerem duas ou mais infrações gravíssimas no período de um ano.
-	-> Quem tem direito a 30 pontos na CNH: caso o condutor cometa uma infração gravíssima ao longo de 12 meses.
-	-> Quem tem direito a 40 pontos na CNH: apenas os condutores que não cometeram nenhuma infração grave dentro de um ano. 
+  -> Quem tem direito a 20 pontos na CNH: esse critério é válido para os motoristas que cometerem duas ou mais infrações gravíssimas no período de um ano.
+  -> Quem tem direito a 30 pontos na CNH: caso o condutor cometa uma infração gravíssima ao longo de 12 meses.
+  -> Quem tem direito a 40 pontos na CNH: apenas os condutores que não cometeram nenhuma infração grave dentro de um ano.
 - Exemplo do Wireframe:
 	- Placa de sentido único e o condutor transitar na contramão, leva multa e 7 pontos na carteira.
