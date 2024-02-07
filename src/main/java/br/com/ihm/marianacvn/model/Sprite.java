@@ -2,6 +2,8 @@ package br.com.ihm.marianacvn.model;
 
 
 import br.com.ihm.marianacvn.utils.ErrorHandler;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -14,9 +16,10 @@ import javax.imageio.ImageIO;
 
 /**
  * Classe responsavel por recortar a imagem,
- *  e deixar sua sprite pronta para ser utilizada
- *
+ * e deixar sua sprite pronta para ser utilizada
  */
+@Getter
+@Setter
 public abstract class Sprite {
 
     /**
@@ -47,20 +50,19 @@ public abstract class Sprite {
     private BufferedImage[] sprites;
     /**
      * Aparencia atual de sua Sprite.
-     *  Utilizada para saber qual valor do array das sprites usar
+     * Utilizada para saber qual valor do array das sprites usar
      */
     private int aparencia;
 
     /**
-     * @param aparencia
-     * @param largura
-     * @param altura
-     * @param colunas
-     * @param linhas
-     * @param x
-     * @param y
-     * @param endereco
-     * @throws IOException
+     * @param aparencia - aparencia atual da Sprite
+     * @param largura   - largura total da imagem
+     * @param altura    - altura total da imagem
+     * @param colunas   - quantidade de colunas da imagem
+     * @param linhas    - quantidade de linhas da imagem
+     * @param x         - localização x da tela
+     * @param y         - localização y da tela
+     * @param endereco  - endereço da imagem
      */
     protected Sprite(int aparencia, int largura, int altura, int colunas, int linhas, int x, int y, String endereco) {
 
@@ -100,23 +102,9 @@ public abstract class Sprite {
     }
 
     /**
-     * Metodo abstrato resposavel por definir como sera a animação de sua Sprite,
-     * Toda Sprite tem uma animação diferente dependendo da imagem.
-     * @param direcao
-     */
-    public abstract void animar(String direcao);
-
-    /**
-     * Metodo abstrato responsavel por desenhar a Sprite na tela,
-     * @param g
-     */
-    public abstract void draw(Graphics g);
-
-    /**
      * Metodo abstrato reponsavel por definir como sera o movimento da Sprite
-     * @param direcao
      */
-    public abstract void mover(String direcao);
+    public abstract void movimento();
 
     /*
      * Metodos Getters e Setters
@@ -127,51 +115,10 @@ public abstract class Sprite {
         this.y = y;
     }
 
-    public BufferedImage getPersonagem() {
-        return personagem;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getAparencia() {
-        return aparencia;
-    }
-
-    public void setAparencia(int aparencia) {
-        this.aparencia = aparencia;
-    }
-
-    public BufferedImage[] getSprites() {
-        return sprites;
-    }
-
-    public int getLarguraPersonagem() {
-        return larguraPersonagem;
-    }
-
-    public int getAlturaPersonagem() {
-        return alturaPersonagem;
-    }
-
     /**
      * @return Rectangle
      */
-    public Rectangle getBounds()
-    {
-        return new Rectangle(x+5, y+5, larguraPersonagem-10, alturaPersonagem-10);
+    public Rectangle getBounds() {
+        return new Rectangle(x + 5, y + 5, larguraPersonagem - 10, alturaPersonagem - 10);
     }
 }

@@ -1,5 +1,8 @@
 package br.com.ihm.marianacvn.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -10,6 +13,8 @@ import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 
+@Getter
+@Setter
 public class Camada {
 
     private String key;
@@ -97,8 +102,8 @@ public class Camada {
     /**
      * @return lista de Rectangle para calculo da colisão
      */
-    public List<Rectangle> montarColisao(Personagem veiculo) {
-        List<Rectangle> tmp = new ArrayList<Rectangle>();
+    public List<Rectangle> montarColisao() {
+        List<Rectangle> tmp = new ArrayList<>();
         for (int i = 0; i < mapaHeight; i++) {
             for (int j = 0; j < mapaWidth; j++) {
                 if (mapa[i][j] != 0) {
@@ -106,18 +111,7 @@ public class Camada {
                 }
             }
         }
-        // Adiciona o veículo na lista de colisão
-        tmp.add(new Rectangle(
-                veiculo.getX()-Personagem.DIFF_COLISAO,
-                veiculo.getY(),
-                veiculo.getLarguraPersonagem()+(Personagem.DIFF_COLISAO*2),
-                veiculo.getAlturaPersonagem()+Personagem.DIFF_COLISAO
-        ));
         return tmp;
-    }
-
-    public String getKey() {
-        return key;
     }
 
     @Override
