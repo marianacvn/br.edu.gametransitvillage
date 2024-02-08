@@ -54,6 +54,9 @@ public abstract class Sprite {
      */
     private int aparencia;
 
+    private int posicaoInicialX;
+    private int posicaoInicialY;
+
     /**
      * @param aparencia - aparencia atual da Sprite
      * @param largura   - largura total da imagem
@@ -77,6 +80,8 @@ public abstract class Sprite {
             this.colunas = linhas;
             this.x = x;
             this.y = y;
+            this.posicaoInicialX = x;
+            this.posicaoInicialY = y;
 
             sprites = new BufferedImage[colunas * linhas];
 
@@ -110,9 +115,14 @@ public abstract class Sprite {
      * Metodos Getters e Setters
      */
     public void setLocale(int x, int y) {
-
         this.x = x;
         this.y = y;
+    }
+
+    public void resetLocale() {
+        this.x = posicaoInicialX;
+        this.y = posicaoInicialY;
+        this.aparencia = 0;
     }
 
     /**

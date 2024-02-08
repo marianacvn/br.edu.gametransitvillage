@@ -2,6 +2,8 @@ package br.com.ihm.marianacvn.view;
 
 import br.com.ihm.marianacvn.view.components.GameButton;
 import br.com.ihm.marianacvn.view.components.GameFaseLabel;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class NewGamePanel extends BasePanel {
 
 	private final GameButton rightButton, leftButton;
@@ -44,7 +48,9 @@ public class NewGamePanel extends BasePanel {
 		fases.add(fase3);
 
 		rightButton = new GameButton("right-voltar", playerLabel.getX()+playerLabel.getWidth()+5, playerLabel.getY()+playerLabel.getHeight()-52, 52);
+		rightButton.setBorderPainted(false);
 		leftButton = new GameButton("voltar", playerLabel.getX()-52-5, playerLabel.getY()+playerLabel.getHeight()-52, 52);
+		leftButton.setBorderPainted(false);
 
 		add(playerLabel);
 		for(GameFaseLabel fase : fases)
@@ -69,22 +75,6 @@ public class NewGamePanel extends BasePanel {
 		}
 		ImageIcon imageIcon = new ImageIcon(Objects.requireNonNull(NewGamePanel.class.getResource("/assets/images/" + currentPlayer + ".png")));
 		playerLabel.setIcon(imageIcon);
-	}
-
-	public GameButton getRightButton() {
-		return rightButton;
-	}
-
-	public GameButton getLeftButton() {
-		return leftButton;
-	}
-
-	public String getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public List<GameFaseLabel> getFases() {
-		return fases;
 	}
 
 	public GameFaseLabel getFaseAtiva() {
