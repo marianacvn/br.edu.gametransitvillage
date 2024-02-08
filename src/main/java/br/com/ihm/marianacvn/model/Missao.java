@@ -17,4 +17,5 @@ public class Missao {
     private Rectangle objetivo;
     private boolean concluida;
     private int recompensa;
+
 }

@@ -38,7 +38,7 @@ public class GameController extends KeyAdapter implements ActionListener {
     private boolean musicStatus;
     private boolean isRunning;
 
-    public GameController() throws IOException {
+    public GameController() {
 
         // Inicia a reprodução da música em uma thread separada
         Thread musicThread = new Thread(() -> {
@@ -214,6 +214,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         if (mainFrame.getButtonByKey("voltar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("new-game")) {
             mainFrame.getButtonByKey("jogar").resetPosition();
             mainFrame.enableMenuComponents("new-game");
+            mainFrame.getButtonByKey("jogar").setVisible(false);
             musicButtonStatus();
         }
         if (mainFrame.getCurrentPanel().getKey().equals("new-game") && ((NewGamePanel) mainFrame.getCurrentPanel()).getRightButton() == e.getSource()) {
@@ -224,6 +225,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         }
         if (mainFrame.getButtonByKey("voltar") == e.getSource() && mainFrame.getCurrentPanel().getKey().equals("help")) {
             mainFrame.enableMenuComponents("help");
+            mainFrame.getButtonByKey("jogar").setVisible(false);
             musicButtonStatus();
         }
 
@@ -255,6 +257,8 @@ public class GameController extends KeyAdapter implements ActionListener {
                     }
 
                     comandosPanel.getPlayButton().addActionListener(this);
+
+                    mapPanel.setGameController(this);
                 }
             }
 
@@ -263,6 +267,7 @@ public class GameController extends KeyAdapter implements ActionListener {
             }
 
             if (personagem.isAtivo()) {
+
                 if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(true);
                 if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(true);
                 if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(true);
@@ -275,10 +280,50 @@ public class GameController extends KeyAdapter implements ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) personagem.setCima(false);
+        if (e.getKeyCode() == KeyEvent.VK_W && personagem.getY() < (veiculo.getY() - 128)) {
+            JOptionPane.showMessageDialog(null, "Você não pode seguir o percurso sem estar no veículo!!", "Atenção", JOptionPane.ERROR_MESSAGE);
+        } else {
+            personagem.setCima(false);
+        }
         if (e.getKeyCode() == KeyEvent.VK_S) personagem.setBaixo(false);
         if (e.getKeyCode() == KeyEvent.VK_A) personagem.setEsquerda(false);
         if (e.getKeyCode() == KeyEvent.VK_D) personagem.setDireita(false);
     }
 
+    public void resetGame() {
+        resetEnterActions();
+        personagem.resetLocale();
+        veiculo.resetLocale();
+        logica.getFaseAtual().setMissaoAtual(logica.getFaseAtual().getMissoes().get(0));
+        inventoryPanel.setMissaoAtual(logica.getFaseAtual().getMissaoAtual());
+        personagem.setMoedas(0);
+        personagem.setPontos(0);
+        inventoryPanel.repaint();
+        personagem.setAtivo(true);
+//        comandosPanel.setVisible(false);
+    }
+
+    public void resetEnterActions() {
+        // Tornar o personagem ativo novamente
+        personagem.setAtivo(true);
+
+        // Limpar a fila de comandos do veículo
+        veiculo.setFilaComandos(new ArrayList<>());
+
+        // Remover os listeners dos comandos
+        for (GameComandoLabel comando : comandos) {
+            for (MouseListener listener : comando.getMouseListeners()) {
+                comando.removeMouseListener(listener);
+            }
+            for (MouseMotionListener listener : comando.getMouseMotionListeners()) {
+                comando.removeMouseMotionListener(listener);
+            }
+        }
+
+        // Desassociar o GameController do MapPanel
+        mapPanel.setGameController(null);
+
+        // Tornar o painel de comandos invisível
+        comandosPanel.setVisible(false);
+    }
 }

@@ -37,8 +37,6 @@ public class InventoryPanel extends BasePanel {
         drawPoints(g2);
         drawCoins(g2);
         drawMissionDetails(g2);
-        g2.setStroke(new BasicStroke(5));
-        g2.drawRect(5, 5, getWidth() - 10, getHeight() - 10);
     }
 
     private void exibirDadosFicticios(Graphics2D g2) {
