@@ -32,7 +32,7 @@ public class GameController extends KeyAdapter implements ActionListener {
     private Personagem personagem;
     private Veiculo veiculo;
     private MusicPlayer introGamePlayer;
-    private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
+  //  private static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0]; // TODO : Mudar para monitor 0
     private static final int TARGET_FPS = 60;
     public static List<Rectangle> colisao;
     private boolean musicStatus;
@@ -74,7 +74,7 @@ public class GameController extends KeyAdapter implements ActionListener {
 
         musicButtonStatus();
 
-        DEVICE.setFullScreenWindow(mainFrame);
+        //DEVICE.setFullScreenWindow(mainFrame);
 
         for (GameButton button : mainFrame.buttons) {
             button.addActionListener(this);
@@ -185,7 +185,7 @@ public class GameController extends KeyAdapter implements ActionListener {
         if (mainFrame.getButtonByKey("novo") == e.getSource()) {
             mainFrame.disableMenuComponents("new-game");
             mainFrame.getButtonByKey("jogar").setVisible(true);
-            mainFrame.getButtonByKey("jogar").changePosition(BaseFrame.CENTER_DEFAULT_X_BUTTON, 850);
+            mainFrame.getButtonByKey("jogar").changePosition(BaseFrame.CENTER_DEFAULT_X_BUTTON, 500);
         }
         if (mainFrame.getButtonByKey("jogar") == e.getSource()) {
             mainFrame.disableMenuComponents("start");

@@ -18,7 +18,7 @@ public class HelpPanel extends BasePanel {
 
 	private void initTutorialTextAreaV2() {
 		final JFXPanel fxPanel = new JFXPanel();
-		fxPanel.setBounds(100, 275, BaseFrame.DEFAULT_WIDTH - 200, BaseFrame.DEFAULT_HEIGHT - 375);
+		fxPanel.setBounds(100, 50, BaseFrame.DEFAULT_WIDTH - 200, BaseFrame.DEFAULT_HEIGHT - 100);
 		fxPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		this.add(fxPanel);
 

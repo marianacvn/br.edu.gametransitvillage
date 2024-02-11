@@ -33,56 +33,42 @@ public class InventoryPanel extends BasePanel {
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.setColor(Color.BLACK);
         g2.drawImage(cnhImage.getImage(), 10, 10, null);
-        exibirDadosFicticios(g2);
         drawPoints(g2);
         drawCoins(g2);
         drawMissionDetails(g2);
     }
 
-    private void exibirDadosFicticios(Graphics2D g2) {
-        DadosPersonagem personagem = this.personagem.getDadosPersonagem();
-        g2.drawString("Nome: " + personagem.getNomePersonagem(), 23, 30);
-        g2.drawString("CPF: " + personagem.getCpf(), 196, 58);
-        g2.drawString("RG: " + personagem.getRg(), 196, 82);
-        g2.drawString(personagem.getDataNascimento(), 310, 82);
-        g2.drawString(personagem.getCategoriaHabilitacao(), 335, 175);
-        g2.setColor(Color.DARK_GRAY);
-        g2.fillRect(196, 163, 60, 12);
-        g2.fillRect(268, 163, 45, 12);
-        g2.setColor(Color.BLACK);
-        g2.drawString("Nro. Registro: " + personagem.getNroRegistro(), 23, 199);
-        g2.drawString("Validade: " + personagem.getValidade(), 203, 199);
-    }
+
 
     private void drawPoints(Graphics2D g2) {
-        g2.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 16));
-        g2.drawImage(alertImage.getImage(), 15, 240, null);
-        g2.drawString("Pontuação: ", 45, 260);
-        g2.drawString(String.valueOf(personagem.getPontuacao()), 220, 260);
+        g2.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 12));
+        g2.drawImage(alertImage.getImage(), 164+15+10, 10, null);
+        g2.drawString("Pontuação: ", 164+45+10, 30);
+        g2.drawString(String.valueOf(personagem.getPontuacao()), 350, 30);
     }
 
     private void drawCoins(Graphics2D g2) {
-        g2.drawImage(coinImage.getImage(), 15, 280, null);
-        g2.drawString("Moedas: ", 45, 300);
-        g2.drawString(String.valueOf(personagem.getMoedas()), 220, 300);
+        g2.drawImage(coinImage.getImage(), 164+15+10, 40, null);
+        g2.drawString("Moedas: ", 164+45+10, 60);
+        g2.drawString(String.valueOf(personagem.getMoedas()), 350, 60);
     }
 
     private void drawMissionDetails(Graphics2D g2) {
-        g2.setFont(new Font("Arial", Font.BOLD, 16));
-        g2.drawString(missaoAtual.getTitulo(), 45, 340);
-
         g2.setFont(new Font("Arial", Font.BOLD, 13));
+        g2.drawString(missaoAtual.getTitulo(), 10, 120);
 
-        g2.drawString("Recompensa: ", 40, 360);
-        g2.drawString(missaoAtual.getRecompensa() + " Moedas", 150, 360);
+        g2.setFont(new Font("Arial", Font.BOLD, 11));
+
+        g2.drawString("Recompensa: ", 10, 135);
+        g2.drawString(missaoAtual.getRecompensa() + " Moedas", 90, 135);
 
         // Quebra a descrição em várias linhas
         String descricao = missaoAtual.getDescricao();
-        int width = this.getWidth() - 100;
+        int width = this.getWidth() - 20;
         FontMetrics fm = g2.getFontMetrics();
         int lineHeight = fm.getHeight();
-        int curX = 45;
-        int curY = 380;
+        int curX = 10;
+        int curY = 150;
 
         String[] words = descricao.split(" ");
         String line = words[0];
@@ -125,10 +111,10 @@ public class InventoryPanel extends BasePanel {
         this.personagem = personagem;
         if (personagem.getCurrentPlayer().equals("male-player")) {
             cnhImage = new ImageIcon(Objects.requireNonNull(InventoryPanel.class.getResource("/assets/images/cnh-male.png")));
-            personagem.setDadosPersonagem(new DadosPersonagem("Felipe Silva", "123.456.789-00", "1234567", "1990", "AB", "123456789", "01/01/2025"));
+
         } else {
             cnhImage = new ImageIcon(Objects.requireNonNull(InventoryPanel.class.getResource("/assets/images/cnh-female.png")));
-            personagem.setDadosPersonagem(new DadosPersonagem("Maria Silva", "123.456.789-00", "1234567", "1990", "AB", "123456789", "01/01/2025"));
+
         }
 
     }
