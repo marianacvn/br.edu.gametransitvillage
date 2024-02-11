@@ -16,6 +16,7 @@ import java.util.List;
 public class Veiculo extends Sprite {
     private int vida;
     private int pontos;
+    private Rectangle veiculoRectangle;
     private boolean ativo;
     public static final int VELOCIDADE = 32;
     public static final int DIFF_COLISAO = -20;
@@ -26,6 +27,7 @@ public class Veiculo extends Sprite {
     public Veiculo(int aparencia, int largura, int altura, int colunas, int linhas, int x, int y, String endereco) {
         super(aparencia, largura, altura, colunas, linhas, x, y, endereco);
         vida = 100;
+        getRectangle(0, 0);
         ativo = true;
         filaComandos = new ArrayList<>();
     }
@@ -113,15 +115,36 @@ public class Veiculo extends Sprite {
         worker.execute();
     }
 
+
+    public void getRectangle(int x, int y) {
+        veiculoRectangle = new Rectangle(getX() + x - DIFF_COLISAO, getY() + y - DIFF_COLISAO, getLarguraPersonagem() + (DIFF_COLISAO * 2), getAlturaPersonagem() + DIFF_COLISAO);
+    }
+
+    public boolean colisao() {
+//        Rectangle veiculo = new Rectangle(
+//                getX() - DIFF_COLISAO,
+//                getY() ,
+//                getLarguraPersonagem() + (DIFF_COLISAO * 2),
+//                getAlturaPersonagem() + DIFF_COLISAO
+//        );
+        for (Rectangle rectangle : GameController.colisao) {
+            if (rectangle.intersects(veiculoRectangle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean colisao(List<Rectangle> tmp, int x, int y) {
-        Rectangle veiculo = new Rectangle(
-                getX() + x - DIFF_COLISAO,
-                getY() + y - DIFF_COLISAO,
-                getLarguraPersonagem() + (DIFF_COLISAO * 2),
-                getAlturaPersonagem() + DIFF_COLISAO
-        );
+//        Rectangle veiculo = new Rectangle(
+//                getX() + x - DIFF_COLISAO,
+//                getY() + y - DIFF_COLISAO,
+//                getLarguraPersonagem() + (DIFF_COLISAO * 2),
+//                getAlturaPersonagem() + DIFF_COLISAO
+//        );
+        getRectangle(x, y);
         for (Rectangle rectangle : tmp) {
-            if (rectangle.intersects(veiculo)) {
+            if (rectangle.intersects(veiculoRectangle)) {
                 return true;
             }
         }

@@ -15,5 +15,14 @@ import java.util.List;
 public class Fase {
 
     private List<Missao> missoes = new ArrayList<>();
+    private Missao missaoAtual;
+
+    public void proximaMissao() {
+        if (missoes.indexOf(missaoAtual) < missoes.size() - 1) {
+            missaoAtual = missoes.get(missoes.indexOf(missaoAtual) + 1);
+        } else {
+            System.exit(0);
+        }
+    }
 
 }

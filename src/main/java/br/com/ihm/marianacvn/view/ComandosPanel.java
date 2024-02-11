@@ -21,25 +21,25 @@ public class ComandosPanel extends BasePanel {
 	private final GameButton playButton;
 
 	public static int COMAND_AREA_X = 277;
-	public static int COMAND_AREA_Y = 14;
+	public static int COMAND_AREA_Y = 11;
 	public static int COMAND_AREA_WIDTH = BaseFrame.DEFAULT_WIDTH - 10;
-	public static int COMAND_AREA_HEIGHT = 70;
+	public static int COMAND_AREA_HEIGHT = 45;
 
 	public ComandosPanel(String key, int x, int y, int width, int height) {
 		super(key, x, y, width, height);
 		setLayout(null);
 		comandos = new ArrayList<>();
 
-		comandos.add(new GameComandoLabel("direita", 14, 14, 52, 52));
-		comandos.add(new GameComandoLabel("esquerda", 76, 14, 52, 52));
-		comandos.add(new GameComandoLabel("cima", 138, 14, 52, 52));
-		comandos.add(new GameComandoLabel("baixo", 200, 14, 52, 52));
+		comandos.add(new GameComandoLabel("direita", 14, 11, 32, 32));
+		comandos.add(new GameComandoLabel("esquerda", 76, 11, 32, 32));
+		comandos.add(new GameComandoLabel("cima", 138, 11, 32, 32));
+		comandos.add(new GameComandoLabel("baixo", 200, 11, 32, 32));
 
 		for (GameComandoLabel comando : comandos) {
 			add(comando);
 		}
 
-		playButton = new GameButton("play", BaseFrame.DEFAULT_WIDTH -14 - 52, 14, 52);
+		playButton = new GameButton("play", BaseFrame.DEFAULT_WIDTH -14 - 32, 11, 32);
 		add(playButton);
 
 		setVisible(false);
@@ -51,7 +51,7 @@ public class ComandosPanel extends BasePanel {
 		g2.setColor(Color.WHITE);
 		g2.fillRect(0, 0, getWidth(), getHeight());
 		g2.setColor(Color.BLACK);
-		g2.setStroke(new BasicStroke(5)); // Define a espessura da linha
+		g2.setStroke(new BasicStroke(2)); // Define a espessura da linha
 		g2.drawRect(5, 5, COMAND_AREA_WIDTH, COMAND_AREA_HEIGHT);
 		g2.drawRect(5, 5, 258, COMAND_AREA_HEIGHT);
 	}

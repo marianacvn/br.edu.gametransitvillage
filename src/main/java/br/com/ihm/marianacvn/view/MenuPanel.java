@@ -17,7 +17,7 @@ public class MenuPanel extends BasePanel {
 
 		g.drawImage(backgroundImage.getImage(), 0, 0, null);
 		g.setColor(new Color(224,222,208));
-		g.setFont(BaseFrame.DEFAULT_FONT.deriveFont(20F));
+		g.setFont(BaseFrame.DEFAULT_FONT.deriveFont(12F));
 		g.drawString("Desenvolvido por Mariana, 2023.", 165, BaseFrame.DEFAULT_HEIGHT - 20);
 
 	}

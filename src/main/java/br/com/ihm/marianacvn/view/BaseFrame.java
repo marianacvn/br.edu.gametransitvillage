@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class BaseFrame extends JFrame {
-	public static final int DEFAULT_WIDTH = 1920;
-	public static final int DEFAULT_HEIGHT = 1080;
-	public static final int DEFAULT_WIDTH_BUTTON = 300;
-	public static final int DEFAULT_HEIGHT_BUTTON = 60;
+	public static final int DEFAULT_WIDTH = 1280;
+	public static final int DEFAULT_HEIGHT = 720;
+	public static final int DEFAULT_WIDTH_BUTTON = 105;
+	public static final int DEFAULT_HEIGHT_BUTTON = 48;
 	public static final int CENTER_DEFAULT_Y = (DEFAULT_HEIGHT / 2);
 	public static final int CENTER_DEFAULT_X = (DEFAULT_WIDTH / 2);
 	public static final int CENTER_DEFAULT_X_BUTTON = ((DEFAULT_WIDTH-DEFAULT_WIDTH_BUTTON )/ 2);
@@ -44,9 +44,9 @@ public abstract class BaseFrame extends JFrame {
 		buttons = new ArrayList<>();
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setLayout(null);
-
 		setUndecorated(true);
-		setLocation(0, 0);
+		setLocationRelativeTo(null);
+	//	setLocation(0, 0);
 //		setExtendedState(JFrame.MAXIMIZED_VERT);
 //		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(false);

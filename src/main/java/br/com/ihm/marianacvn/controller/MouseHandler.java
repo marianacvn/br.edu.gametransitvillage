@@ -31,7 +31,7 @@ public class MouseHandler extends MouseAdapter {
         // TODO: Ajustar lógica para que os novos comandos passem por cima dos comandos já existentes na fila
 
         // Verifica se o componente que disparou o evento é uma instância de GameComandoLabel
-        if (e.getSource() instanceof GameComandoLabel clickedCommand  && filaComandos.size() < 25) {
+        if (e.getSource() instanceof GameComandoLabel clickedCommand  && filaComandos.size() < 23) {
 
             // Cria um novo comando com as mesmas propriedades do comando clicado
             draggedCommand = new GameComandoLabel(clickedCommand.getDirecao(), clickedCommand.getX(), clickedCommand.getY(), clickedCommand.getWidth(), clickedCommand.getHeight());
@@ -58,7 +58,7 @@ public class MouseHandler extends MouseAdapter {
     public void mouseDragged(MouseEvent e) {
 
         // Verifica se há um comando sendo arrastado
-        if (draggedCommand != null  && filaComandos.size() < 25) {
+        if (draggedCommand != null  && filaComandos.size() < 23) {
             // Calcula a diferença entre a posição inicial do mouse e a posição atual do mouse
             Point delta = new Point(e.getLocationOnScreen().x - initialMouseLocation.x, e.getLocationOnScreen().y - initialMouseLocation.y);
 
@@ -78,7 +78,7 @@ public class MouseHandler extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
 
         // Verifica se há um comando sendo arrastado
-        if (draggedCommand != null && filaComandos.size() < 25) {
+        if (draggedCommand != null && filaComandos.size() < 23) {
 
             // Verifica se o comando está dentro da área demarcada
             if (isWithinDemarcatedArea(draggedCommand)) {
@@ -120,7 +120,7 @@ public class MouseHandler extends MouseAdapter {
         // Define os limites da área demarcada
         int areaX = ComandosPanel.COMAND_AREA_X;
         int areaY = ComandosPanel.COMAND_AREA_Y;
-        int areaWidth = ComandosPanel.COMAND_AREA_WIDTH - 52;
+        int areaWidth = ComandosPanel.COMAND_AREA_WIDTH - 32;
         int areaHeight = ComandosPanel.COMAND_AREA_HEIGHT;
 
         // Pega o retângulo que representa o comando
