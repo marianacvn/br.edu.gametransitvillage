@@ -15,7 +15,7 @@ public class MapPanel extends BasePanel {
     private Logica logica;
     private Personagem personagem;
     private Veiculo veiculo;
-    private static final double ZOOM_LEVEL = 2.0;
+    private static final double ZOOM_LEVEL = 1.5;
     private boolean isGameOver, isMissaoConcluida;
     private GameController gameController;
 
@@ -48,11 +48,9 @@ public class MapPanel extends BasePanel {
         // Desenha as colisões, use apenas para testes
         //showColisionRectangle(g2d); // TODO: Descomentar para mostrar os retângulos de colisão
 
-        // TODO: FPS  -  Da forma que está o fps é exibido apenas ao final da tela
-        g2d.setColor(Color.WHITE);
-        //System.out.println(GameLoop.frameCount);
-        g2d.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
-        g2d.drawString("FPS: " + GameLoop.frameCount, 20, BaseFrame.DEFAULT_HEIGHT - 20);
+        //g2d.setColor(Color.WHITE);
+        //g2d.setFont(BaseFrame.DEFAULT_FONT.deriveFont(Font.BOLD, 20));
+        //g2d.drawString("FPS: " + GameLoop.frameCount, 20, BaseFrame.DEFAULT_HEIGHT - 20);
 
         verificarColisao();
 

@@ -28,28 +28,28 @@ public class NewGamePanel extends BasePanel {
 		setLayout(null);
 
 		playerLabel = new JLabel();
-		playerLabel.setBounds(BaseFrame.CENTER_DEFAULT_X-64, 150, 100, 200);
+		playerLabel.setBounds((BaseFrame.DEFAULT_WIDTH-100)/2+20, 100, 100, 200);
 		setPlayerImage();
 
 		GameFaseLabel fase1 = new GameFaseLabel(1, false, "fase1");
-		fase1.setBounds(BaseFrame.CENTER_DEFAULT_X-314-30, 500, 200, 200);
+		fase1.setBounds((BaseFrame.DEFAULT_WIDTH-100)/2-100-30, 340, 100, 100);
 		fase1.setFaseImage();
 
 		GameFaseLabel fase2 = new GameFaseLabel(2, true, "fase2-block");
-		fase2.setBounds(BaseFrame.CENTER_DEFAULT_X-114, 500, 200, 200);
+		fase2.setBounds((BaseFrame.DEFAULT_WIDTH-100)/2, 340, 100, 100);
 		fase2.setFaseImage();
 
 		GameFaseLabel fase3 = new GameFaseLabel(3, true, "fase3-block");
-		fase3.setBounds(BaseFrame.CENTER_DEFAULT_X+86+30, 500, 200, 200);
+		fase3.setBounds((BaseFrame.DEFAULT_WIDTH-100)/2+100+30, 340, 100, 100);
 		fase3.setFaseImage();
 
 		fases.add(fase1);
 		fases.add(fase2);
 		fases.add(fase3);
 
-		rightButton = new GameButton("right-voltar", playerLabel.getX()+playerLabel.getWidth()+5, playerLabel.getY()+playerLabel.getHeight()-52, 52);
+		rightButton = new GameButton("right-voltar", playerLabel.getX()+playerLabel.getWidth()-15, playerLabel.getY()+playerLabel.getHeight()-73, 18);
 		rightButton.setBorderPainted(false);
-		leftButton = new GameButton("voltar", playerLabel.getX()-52-5, playerLabel.getY()+playerLabel.getHeight()-52, 52);
+		leftButton = new GameButton("voltar", playerLabel.getX()-52, playerLabel.getY()+playerLabel.getHeight()-73, 18);
 		leftButton.setBorderPainted(false);
 
 		add(playerLabel);
