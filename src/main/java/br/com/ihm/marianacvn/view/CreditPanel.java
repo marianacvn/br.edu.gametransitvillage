@@ -19,7 +19,7 @@ public class CreditPanel extends BasePanel {
 		g.setFont(new Font("Arial", Font.BOLD, 30));
 		g.drawString("Cr�ditos", 255, 150);
 		g.setFont(new Font("Arial", Font.BOLD, 15));
-		g.drawString("Jogo criado por: Davi de Lima das Neves", 175, 180);
+		g.drawString("Jogo criado por: Mariana de Carvalho Nunes", 175, 180);
 		g.drawString("Projeto criado para a disciplina", 210, 200);
 		g.drawString("Modelagem e Programa��o Orientada a Objetos (MPOO)", 125, 220);
 		g.drawString("Professor: Richarlyson D'Emery", 210, 240);
